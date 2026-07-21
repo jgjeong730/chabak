@@ -119,10 +119,17 @@ regionSelect.innerHTML = regions
   .join("");
 
 // ---------- map ----------
-const map = L.map("map", { zoomControl: true }).setView([36.4, 127.9], 7);
+const KOREA_BOUNDS = L.latLngBounds([32.9, 124.5], [38.7, 131.0]);
+const map = L.map("map", {
+  zoomControl: true,
+  minZoom: 7,
+  maxBounds: KOREA_BOUNDS.pad(0.15),
+  maxBoundsViscosity: 1.0,
+}).fitBounds(KOREA_BOUNDS);
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
   attribution: "&copy; OpenStreetMap contributors",
   maxZoom: 18,
+  noWrap: true,
 }).addTo(map);
 const clusterGroup = L.markerClusterGroup({ maxClusterRadius: 50 });
 map.addLayer(clusterGroup);

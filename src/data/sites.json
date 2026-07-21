@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-07-21T08:49:01.372Z",
+  "generatedAt": "2026-07-21T21:30:04.867Z",
   "source": "curated-only",
-  "curatedCount": 27,
+  "curatedCount": 48,
   "gocampingCount": 0,
   "sites": [
     {
@@ -492,6 +492,379 @@
       ],
       "pet": true,
       "lastVerified": "2026-05-25"
+    },
+    {
+      "id": "gw-006",
+      "name": "아야진해변 주차장",
+      "region": "강원",
+      "address": "강원 고성군 죽왕면",
+      "lat": 38.3782,
+      "lng": 128.4649,
+      "type": "free",
+      "source": "community",
+      "price": 0,
+      "amenities": [
+        "해변"
+      ],
+      "pet": true,
+      "lastVerified": "2026-05-08"
+    },
+    {
+      "id": "gw-007",
+      "name": "추암해변 주차장",
+      "region": "강원",
+      "address": "강원 동해시 추암동",
+      "lat": 37.4835,
+      "lng": 129.1691,
+      "type": "free",
+      "source": "community",
+      "price": 0,
+      "amenities": [
+        "해변",
+        "화장실"
+      ],
+      "pet": true,
+      "lastVerified": "2026-04-25"
+    },
+    {
+      "id": "gw-202",
+      "name": "오대산국립공원 소금강야영장",
+      "region": "강원",
+      "address": "강원 강릉시 연곡면",
+      "lat": 37.7928,
+      "lng": 128.6699,
+      "type": "reservation",
+      "source": "official",
+      "price": 6000,
+      "amenities": [
+        "계곡",
+        "화장실"
+      ],
+      "pet": false,
+      "lastVerified": "2026-06-27",
+      "provider": "knps",
+      "link": "https://reservation.knps.or.kr"
+    },
+    {
+      "id": "cc-003",
+      "name": "속리산국립공원 화양동야영장",
+      "region": "충북",
+      "address": "충북 괴산군 청천면",
+      "lat": 36.7369,
+      "lng": 127.8264,
+      "type": "reservation",
+      "source": "official",
+      "price": 6000,
+      "amenities": [
+        "계곡",
+        "화장실"
+      ],
+      "pet": false,
+      "lastVerified": "2026-06-14",
+      "provider": "knps",
+      "link": "https://reservation.knps.or.kr"
+    },
+    {
+      "id": "cn-003",
+      "name": "무창포해수욕장 주차장",
+      "region": "충남",
+      "address": "충남 보령시 웅천읍",
+      "lat": 36.2038,
+      "lng": 126.487,
+      "type": "free",
+      "source": "community",
+      "price": 0,
+      "amenities": [
+        "해변",
+        "화장실",
+        "편의점"
+      ],
+      "pet": true,
+      "lastVerified": "2026-05-09"
+    },
+    {
+      "id": "jn-002",
+      "name": "신지명사십리해변 주차장",
+      "region": "전남",
+      "address": "전남 완도군 신지면",
+      "lat": 34.302,
+      "lng": 126.933,
+      "type": "free",
+      "source": "community",
+      "price": 0,
+      "amenities": [
+        "해변",
+        "화장실"
+      ],
+      "pet": true,
+      "lastVerified": "2026-05-17"
+    },
+    {
+      "id": "jn-003",
+      "name": "남열해돋이해변 주차장",
+      "region": "전남",
+      "address": "전남 고흥군 영남면",
+      "lat": 34.4728,
+      "lng": 127.3477,
+      "type": "free",
+      "source": "community",
+      "price": 0,
+      "amenities": [
+        "해변"
+      ],
+      "pet": true,
+      "lastVerified": "2026-04-12"
+    },
+    {
+      "id": "jn-004",
+      "name": "와온해변 주차장",
+      "region": "전남",
+      "address": "전남 순천시 해룡면",
+      "lat": 34.8382,
+      "lng": 127.5442,
+      "type": "free",
+      "source": "community",
+      "price": 0,
+      "amenities": [
+        "해변"
+      ],
+      "pet": true,
+      "lastVerified": "2026-03-30"
+    },
+    {
+      "id": "jn-005",
+      "name": "회동 신비의바닷길 주차장",
+      "region": "전남",
+      "address": "전남 진도군 고군면",
+      "lat": 34.4762,
+      "lng": 126.3072,
+      "type": "free",
+      "source": "community",
+      "price": 0,
+      "amenities": [
+        "해변",
+        "화장실",
+        "편의점"
+      ],
+      "pet": true,
+      "lastVerified": "2026-05-03"
+    },
+    {
+      "id": "gb-004",
+      "name": "고래불해수욕장 오토캠핑장",
+      "region": "경북",
+      "address": "경북 영덕군 병곡면",
+      "lat": 36.6398,
+      "lng": 129.4183,
+      "type": "fee",
+      "source": "official",
+      "price": 20000,
+      "amenities": [
+        "해변",
+        "전기",
+        "화장실",
+        "샤워장"
+      ],
+      "pet": true,
+      "lastVerified": "2026-06-05",
+      "provider": "gocamping",
+      "link": "https://gocamping.or.kr"
+    },
+    {
+      "id": "gn-003",
+      "name": "함목해수욕장 주차장",
+      "region": "경남",
+      "address": "경남 거제시 일운면",
+      "lat": 34.8114,
+      "lng": 128.6994,
+      "type": "free",
+      "source": "community",
+      "price": 0,
+      "amenities": [
+        "해변"
+      ],
+      "pet": true,
+      "lastVerified": "2026-04-21"
+    },
+    {
+      "id": "gn-004",
+      "name": "하동송림 오토캠핑장",
+      "region": "경남",
+      "address": "경남 하동군 하동읍",
+      "lat": 35.0672,
+      "lng": 127.7515,
+      "type": "fee",
+      "source": "official",
+      "price": 15000,
+      "amenities": [
+        "화장실",
+        "전기",
+        "개수대"
+      ],
+      "pet": true,
+      "lastVerified": "2026-05-29",
+      "provider": "gocamping",
+      "link": "https://gocamping.or.kr"
+    },
+    {
+      "id": "jj-004",
+      "name": "표선해수욕장 주차장",
+      "region": "제주",
+      "address": "제주 서귀포시 표선면",
+      "lat": 33.3255,
+      "lng": 126.8365,
+      "type": "free",
+      "source": "community",
+      "price": 0,
+      "amenities": [
+        "해변",
+        "화장실",
+        "편의점"
+      ],
+      "pet": true,
+      "lastVerified": "2026-06-03"
+    },
+    {
+      "id": "gg-002",
+      "name": "제부도 주차장",
+      "region": "경기",
+      "address": "경기 화성시 서신면",
+      "lat": 37.1975,
+      "lng": 126.6413,
+      "type": "fee",
+      "source": "community",
+      "price": 5000,
+      "amenities": [
+        "해변",
+        "화장실",
+        "편의점"
+      ],
+      "pet": true,
+      "lastVerified": "2026-05-11"
+    },
+    {
+      "id": "gg-003",
+      "name": "강화 동막해수욕장 주차장",
+      "region": "경기",
+      "address": "인천 강화군 화도면",
+      "lat": 37.6103,
+      "lng": 126.3944,
+      "type": "free",
+      "source": "community",
+      "price": 0,
+      "amenities": [
+        "해변",
+        "화장실"
+      ],
+      "pet": true,
+      "lastVerified": "2026-04-07"
+    },
+    {
+      "id": "ic-002",
+      "name": "무의도 하나개해수욕장 주차장",
+      "region": "인천",
+      "address": "인천 중구 무의동",
+      "lat": 37.4432,
+      "lng": 126.4189,
+      "type": "free",
+      "source": "community",
+      "price": 0,
+      "amenities": [
+        "해변",
+        "화장실"
+      ],
+      "pet": true,
+      "lastVerified": "2026-04-30"
+    },
+    {
+      "id": "bs-001",
+      "name": "다대포해수욕장 공영주차장",
+      "region": "부산",
+      "address": "부산 사하구 다대동",
+      "lat": 35.0492,
+      "lng": 128.965,
+      "type": "fee",
+      "source": "community",
+      "price": 3000,
+      "amenities": [
+        "해변",
+        "화장실",
+        "편의점"
+      ],
+      "pet": true,
+      "lastVerified": "2026-06-06"
+    },
+    {
+      "id": "bs-002",
+      "name": "일광해수욕장 주차장",
+      "region": "부산",
+      "address": "부산 기장군 일광읍",
+      "lat": 35.2716,
+      "lng": 129.2409,
+      "type": "free",
+      "source": "community",
+      "price": 0,
+      "amenities": [
+        "해변"
+      ],
+      "pet": true,
+      "lastVerified": "2026-04-18"
+    },
+    {
+      "id": "us-001",
+      "name": "진하해수욕장 오토캠핑장",
+      "region": "울산",
+      "address": "울산 울주군 서생면",
+      "lat": 35.3852,
+      "lng": 129.3616,
+      "type": "fee",
+      "source": "official",
+      "price": 20000,
+      "amenities": [
+        "해변",
+        "전기",
+        "화장실",
+        "샤워장"
+      ],
+      "pet": true,
+      "lastVerified": "2026-06-13",
+      "provider": "gocamping",
+      "link": "https://gocamping.or.kr"
+    },
+    {
+      "id": "dj-001",
+      "name": "장태산자연휴양림 야영장",
+      "region": "대전",
+      "address": "대전 서구 장안동",
+      "lat": 36.2311,
+      "lng": 127.3283,
+      "type": "reservation",
+      "source": "official",
+      "price": 9000,
+      "amenities": [
+        "화장실",
+        "전기",
+        "개수대"
+      ],
+      "pet": false,
+      "lastVerified": "2026-06-21"
+    },
+    {
+      "id": "dg-001",
+      "name": "팔공산자연공원 야영장",
+      "region": "대구",
+      "address": "대구 동구 도학동",
+      "lat": 35.9426,
+      "lng": 128.6866,
+      "type": "reservation",
+      "source": "official",
+      "price": 8000,
+      "amenities": [
+        "계곡",
+        "화장실"
+      ],
+      "pet": false,
+      "lastVerified": "2026-05-31"
     }
   ]
 }

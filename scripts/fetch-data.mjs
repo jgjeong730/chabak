@@ -152,6 +152,7 @@ function mapGoCampingItem(item) {
     lastVerified: deriveVerifiedDate(item),
     provider: "gocamping",
     link: item.homepage?.match(/https?:\/\/[^\s"'<>]+/)?.[0] || "https://gocamping.or.kr",
+    image: item.firstImageUrl?.match(/^https?:\/\//) ? item.firstImageUrl : null,
   };
 }
 

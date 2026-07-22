@@ -165,7 +165,7 @@ const regionSelect = document.getElementById("regionSelect");
 function populateRegionOptions() {
   const regions = ["all", ...new Set(state.sites.map((s) => s.region))];
   regionSelect.innerHTML = regions
-    .map((r) => `<option value="${r}">${r === "all" ? "전체 지역" : r}</option>`)
+    .map((r) => `<option value="${r}">${r === "all" ? "전체" : r}</option>`)
     .join("");
 }
 
@@ -221,7 +221,11 @@ function renderList(sites) {
       .map(
         (s) => `
       <div class="item ${s.id === state.selectedId ? "selected" : ""}" data-id="${s.id}">
-        <div class="thumb">${s.type === "free" ? "🅿️" : s.type === "fee" ? "🏕️" : "📅"}</div>
+        <div class="thumb">${
+          s.image
+            ? `<img src="${s.image}" alt="" loading="lazy" onerror="this.parentElement.textContent='${s.type === "free" ? "🅿️" : s.type === "fee" ? "🏕️" : "📅"}'" />`
+            : s.type === "free" ? "🅿️" : s.type === "fee" ? "🏕️" : "📅"
+        }</div>
         <div>
           <div class="name">${s.name}</div>
           <div class="meta">

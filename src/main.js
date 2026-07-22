@@ -185,6 +185,20 @@ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
 }).addTo(map);
 const clusterGroup = L.markerClusterGroup({ maxClusterRadius: 50 });
 map.addLayer(clusterGroup);
+
+// 느린 네트워크(폰트/타일 로딩)에서 지도 컨테이너 크기가 확정되기 전에 Leaflet이
+// 초기화되면 흰 박스로 남는 문제 방지: 크기가 실제로 바뀔 때마다 재계산한다.
+let didInitialFit = false;
+const resizeObserver = new ResizeObserver((entries) => {
+  const { width, height } = entries[0]?.contentRect ?? {};
+  if (!width || !height) return;
+  map.invalidateSize();
+  if (!didInitialFit) {
+    didInitialFit = true;
+    map.fitBounds(KOREA_BOUNDS);
+  }
+});
+resizeObserver.observe(document.querySelector(".map-panel"));
 const markerById = new Map();
 
 function pinIcon(type) {

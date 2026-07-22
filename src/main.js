@@ -324,6 +324,13 @@ async function loadData() {
   }
   populateRegionOptions();
   refresh();
-  setTimeout(() => map.invalidateSize(), 100);
+  setTimeout(() => {
+    map.invalidateSize();
+    map.fitBounds(KOREA_BOUNDS);
+  }, 100);
 }
 loadData();
+
+window.addEventListener("resize", () => {
+  map.invalidateSize();
+});

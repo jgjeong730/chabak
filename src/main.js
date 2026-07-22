@@ -42,7 +42,7 @@ function filteredSites() {
     }
     if (q && !(s.name.toLowerCase().includes(q) || s.address.toLowerCase().includes(q))) return false;
     return true;
-  });
+  }).sort((a, b) => a.name.localeCompare(b.name, "ko"));
 }
 
 function kakaoSearchLink(site) {
@@ -152,11 +152,11 @@ function applyTheme(mode) {
   localStorage.setItem("chabak-theme", mode);
   themeToggle.textContent = mode === "system" ? "🌓 자동" : mode === "dark" ? "🌙 다크" : "☀️ 라이트";
 }
-const savedTheme = localStorage.getItem("chabak-theme") || "system";
+const savedTheme = localStorage.getItem("chabak-theme") || "light";
 applyTheme(savedTheme);
 themeToggle.addEventListener("click", () => {
-  const order = ["system", "light", "dark"];
-  const current = localStorage.getItem("chabak-theme") || "system";
+  const order = ["light", "dark", "system"];
+  const current = localStorage.getItem("chabak-theme") || "light";
   applyTheme(order[(order.indexOf(current) + 1) % order.length]);
 });
 

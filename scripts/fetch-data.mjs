@@ -2,32 +2,43 @@
 // src/data/sites.json을 생성한다. GOCAMPING_API_KEY가 없거나 API 호출이 실패하면
 // 큐레이션 데이터만으로 sites.json을 만들어 빌드가 절대 깨지지 않도록 한다.
 
-import { readFile, writeFile } from "node:fs/promises";
+import { readFile, writeFile, mkdir } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const CURATED_PATH = path.join(__dirname, "..", "src", "data", "curated.json");
-const OUTPUT_PATH = path.join(__dirname, "..", "src", "data", "sites.json");
+const OUTPUT_PATH = path.join(__dirname, "..", "public", "data", "sites.json");
 
 const API_KEY = process.env.GOCAMPING_API_KEY;
 const BASE_URL = "https://apis.data.go.kr/B551011/GoCamping/basedList";
 const PAGE_SIZE = 300;
 const MAX_PAGES = 30; // 안전장치: 최대 9,000건까지만 순회
 
-const AMENITY_RULES = [
+const TEXT_AMENITY_RULES = [
   ["전기", ["전기"]],
-  ["화장실", ["화장실"]],
-  ["샤워장", ["샤워"]],
-  ["개수대", ["개수대", "취사"]],
-  ["편의점", ["편의점", "매점"]],
-  ["해변", ["해수욕장", "해변"]],
+  ["편의점", ["편의점", "마트"]],
+  ["해변", ["해수욕", "해변"]],
   ["계곡", ["계곡"]],
 ];
 
-function deriveAmenities(...texts) {
-  const joined = texts.filter(Boolean).join(" ");
-  return AMENITY_RULES.filter(([, keywords]) => keywords.some((k) => joined.includes(k))).map(([label]) => label);
+function deriveAmenities(item) {
+  const text = [item.sbrsCl, item.sbrsEtc, item.posblFcltyCl, item.lctCl, item.lineIntro]
+    .filter(Boolean)
+    .join(" ");
+  const amenities = TEXT_AMENITY_RULES.filter(([, keywords]) => keywords.some((k) => text.includes(k))).map(
+    ([label]) => label
+  );
+  if (Number(item.toiletCo) > 0) amenities.push("화장실");
+  if (Number(item.swrmCo) > 0) amenities.push("샤워장");
+  if (Number(item.wtrplCo) > 0) amenities.push("개수대");
+  return [...new Set(amenities)];
+}
+
+function deriveVerifiedDate(item) {
+  const raw = item.modifiedtime || item.createdtime || "";
+  if (!raw) return null;
+  return raw.includes("-") ? raw : raw.replace(/^(\d{4})(\d{2})(\d{2})$/, "$1-$2-$3");
 }
 
 const REGION_PREFIXES = [
@@ -52,10 +63,17 @@ const REGION_PREFIXES = [
   ["제주특별자치도", "제주"],
 ];
 
-function deriveRegion(addr1) {
-  const text = addr1 || "";
+const GWANGJU_GU = ["동구", "서구", "남구", "북구", "광산구"];
+
+function deriveRegion(doNm, addr1) {
+  // 2026년 전남-광주 행정통합으로 doNm이 "전남광주통합특별시"로 오는 경우, 시군구명으로 광주/전남을 재구분한다.
+  if (doNm?.includes("전남") && doNm?.includes("광주")) {
+    const sigungu = (addr1 || "").split(" ")[1] || "";
+    return GWANGJU_GU.includes(sigungu) ? "광주" : "전남";
+  }
+  const text = doNm || addr1 || "";
   const hit = REGION_PREFIXES.find(([prefix]) => text.startsWith(prefix));
-  return hit ? hit[1] : text.split(" ")[0] || "기타";
+  return hit ? hit[1] : (addr1 || "").split(" ")[0] || "기타";
 }
 
 async function fetchGoCampingItems() {
@@ -119,16 +137,16 @@ function mapGoCampingItem(item) {
   return {
     id: `gc-${item.contentId}`,
     name: item.facltNm.trim(),
-    region: deriveRegion(item.addr1),
+    region: deriveRegion(item.doNm, item.addr1),
     address: [item.addr1, item.addr2].filter(Boolean).join(" ").trim(),
     lat,
     lng,
     type: "fee",
     source: "official",
     price: null,
-    amenities: deriveAmenities(item.sbrsCl, item.sbrsEtc, item.posblFcltyCl, item.lineIntro, item.intro),
+    amenities: deriveAmenities(item),
     pet,
-    lastVerified: (item.modifiedtime || item.createdtime || "").slice(0, 8).replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3") || null,
+    lastVerified: deriveVerifiedDate(item),
     provider: "gocamping",
     link: item.homepage?.match(/https?:\/\/[^\s"'<>]+/)?.[0] || "https://gocamping.or.kr",
   };
@@ -149,6 +167,7 @@ async function main() {
     sites,
   };
 
+  await mkdir(path.dirname(OUTPUT_PATH), { recursive: true });
   await writeFile(OUTPUT_PATH, JSON.stringify(output, null, 2) + "\n", "utf-8");
   console.log(`sites.json 생성 완료: 큐레이션 ${curated.sites.length}건 + 고캠핑 ${gocampingSites.length}건 = 총 ${sites.length}건`);
 }

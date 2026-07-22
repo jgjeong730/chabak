@@ -4,13 +4,12 @@ import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import L from "leaflet";
 import "leaflet.markercluster";
 import "./style.css";
-import sitesData from "./data/sites.json";
 
 const TYPE_LABEL = { free: "무료", fee: "유료", reservation: "예약제" };
 const SOURCE_LABEL = { official: "공식", community: "제보" };
 
 const state = {
-  sites: sitesData.sites,
+  sites: [],
   query: "",
   region: "all",
   type: "all",
@@ -84,7 +83,7 @@ app.innerHTML = `
           <span><i style="background:var(--resv)"></i>예약제</span>
         </div>
       </div>
-      <div class="list-panel" id="listPanel"></div>
+      <div class="list-panel" id="listPanel"><div class="empty">불러오는 중...</div></div>
     </div>
   </div>
   <div class="overlay hidden" id="overlay">
@@ -113,10 +112,12 @@ themeToggle.addEventListener("click", () => {
 
 // ---------- region options ----------
 const regionSelect = document.getElementById("regionSelect");
-const regions = ["all", ...new Set(state.sites.map((s) => s.region))];
-regionSelect.innerHTML = regions
-  .map((r) => `<option value="${r}">${r === "all" ? "전체 지역" : r}</option>`)
-  .join("");
+function populateRegionOptions() {
+  const regions = ["all", ...new Set(state.sites.map((s) => s.region))];
+  regionSelect.innerHTML = regions
+    .map((r) => `<option value="${r}">${r === "all" ? "전체 지역" : r}</option>`)
+    .join("");
+}
 
 // ---------- map ----------
 const KOREA_BOUNDS = L.latLngBounds([32.9, 124.5], [38.7, 131.0]);
@@ -285,5 +286,18 @@ function refresh({ keepMap = false } = {}) {
   if (!keepMap) renderMap(sites);
 }
 
-refresh();
-setTimeout(() => map.invalidateSize(), 100);
+// ---------- data load ----------
+async function loadData() {
+  try {
+    const res = await fetch(`${import.meta.env.BASE_URL}data/sites.json`);
+    const data = await res.json();
+    state.sites = data.sites;
+  } catch (err) {
+    console.error("데이터 로드 실패:", err);
+    state.sites = [];
+  }
+  populateRegionOptions();
+  refresh();
+  setTimeout(() => map.invalidateSize(), 100);
+}
+loadData();

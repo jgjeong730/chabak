@@ -137,6 +137,7 @@ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
   attribution: "&copy; OpenStreetMap contributors",
   maxZoom: 18,
   noWrap: true,
+  bounds: KOREA_BOUNDS,
 }).addTo(map);
 const clusterGroup = L.markerClusterGroup({ maxClusterRadius: 50 });
 map.addLayer(clusterGroup);

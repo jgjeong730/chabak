@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 jobs:
   refresh:
@@ -22,6 +23,7 @@ jobs:
         env:
           GOCAMPING_API_KEY: ${{ secrets.GOCAMPING_API_KEY }}
       - name: Commit updated data if changed
+        id: commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -29,6 +31,15 @@ jobs:
             git add public/data/sites.json
             git commit -m "chore: refresh camping data"
             git push
+            echo "changed=true" >> "$GITHUB_OUTPUT"
           else
             echo "변경 사항 없음"
+            echo "changed=false" >> "$GITHUB_OUTPUT"
           fi
+      # GITHUB_TOKEN으로 한 push는 다른 워크플로우(배포)를 자동으로 트리거하지 않으므로
+      # 데이터가 바뀐 경우에만 배포 워크플로우를 직접 실행해 실제 사이트에 반영한다.
+      - name: Trigger deploy
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run deploy.yml --repo ${{ github.repository }}

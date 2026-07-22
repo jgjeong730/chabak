@@ -145,6 +145,11 @@ button, select, input { font-family: inherit; }
   white-space: nowrap;
 }
 .chip.active { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); font-weight: 600; }
+.chip-group { display: flex; gap: 6px; flex-wrap: wrap; }
+.type-chip[data-type="bookable"].active {
+  background: var(--accent2-soft); color: var(--accent2); border-color: var(--accent2);
+}
+.filter-divider { width: 1px; height: 22px; background: var(--border); margin: 0 2px; flex: none; }
 
 .disclaimer {
   padding: 8px 20px;

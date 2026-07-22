@@ -22,7 +22,11 @@ function filteredSites() {
   const q = state.query.trim().toLowerCase();
   return state.sites.filter((s) => {
     if (state.region !== "all" && s.region !== state.region) return false;
-    if (state.type !== "all" && s.type !== state.type) return false;
+    if (state.type === "bookable") {
+      if (s.type === "free") return false;
+    } else if (state.type !== "all" && s.type !== state.type) {
+      return false;
+    }
     for (const a of state.amenities) {
       if (a === "반려동물") {
         if (!s.pet) return false;
@@ -60,12 +64,14 @@ app.innerHTML = `
     <div class="filterbar">
       <input type="text" id="search" placeholder="장소명 또는 주소 검색" />
       <select id="regionSelect"></select>
-      <select id="typeSelect">
-        <option value="all">전체 유형</option>
-        <option value="free">무료</option>
-        <option value="fee">유료</option>
-        <option value="reservation">예약제</option>
-      </select>
+      <div class="chip-group" id="typeGroup">
+        <span class="chip type-chip active" data-type="all">전체</span>
+        <span class="chip type-chip" data-type="free">무료</span>
+        <span class="chip type-chip" data-type="fee">유료</span>
+        <span class="chip type-chip" data-type="reservation">예약제</span>
+        <span class="chip type-chip" data-type="bookable">예약 가능만</span>
+      </div>
+      <span class="filter-divider"></span>
       <span class="chip" data-amenity="전기">전기</span>
       <span class="chip" data-amenity="화장실">화장실</span>
       <span class="chip" data-amenity="반려동물">반려동물 동반</span>
@@ -249,9 +255,12 @@ regionSelect.addEventListener("change", (e) => {
   state.region = e.target.value;
   refresh();
 });
-document.getElementById("typeSelect").addEventListener("change", (e) => {
-  state.type = e.target.value;
-  refresh();
+document.querySelectorAll(".type-chip").forEach((chip) => {
+  chip.addEventListener("click", () => {
+    state.type = chip.dataset.type;
+    document.querySelectorAll(".type-chip").forEach((c) => c.classList.toggle("active", c === chip));
+    refresh();
+  });
 });
 document.querySelectorAll(".chip[data-amenity]").forEach((chip) => {
   chip.addEventListener("click", () => {

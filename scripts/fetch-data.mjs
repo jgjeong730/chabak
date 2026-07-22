@@ -133,6 +133,8 @@ function mapGoCampingItem(item) {
 
   const animalText = `${item.animalCmgCl ?? ""} ${item.animalCmgClEtc ?? ""}`;
   const pet = animalText.includes("가능") && !animalText.includes("불가능");
+  // 일반야영장(텐트 사이트)만 모토캠핑 적합으로 본다. 자동차야영장 전용·글램핑·카라반은 제외.
+  const moto = (item.induty || "").includes("일반야영장");
 
   return {
     id: `gc-${item.contentId}`,
@@ -146,6 +148,7 @@ function mapGoCampingItem(item) {
     price: null,
     amenities: deriveAmenities(item),
     pet,
+    moto,
     lastVerified: deriveVerifiedDate(item),
     provider: "gocamping",
     link: item.homepage?.match(/https?:\/\/[^\s"'<>]+/)?.[0] || "https://gocamping.or.kr",

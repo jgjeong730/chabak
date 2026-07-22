@@ -30,6 +30,8 @@ function filteredSites() {
     for (const a of state.amenities) {
       if (a === "반려동물") {
         if (!s.pet) return false;
+      } else if (a === "모토캠핑") {
+        if (!s.moto) return false;
       } else if (!s.amenities.includes(a)) {
         return false;
       }
@@ -83,6 +85,7 @@ app.innerHTML = `
       <span class="chip" data-amenity="전기">전기</span>
       <span class="chip" data-amenity="화장실">화장실</span>
       <span class="chip" data-amenity="반려동물">반려동물 동반</span>
+      <span class="chip" data-amenity="모토캠핑">🏍️ 모토캠핑 가능</span>
     </div>
     <div class="body view-map" id="body">
       <div class="map-panel">
@@ -236,6 +239,7 @@ function selectSite(id) {
     <div class="addr">${site.address}</div>
     <div class="row"><span class="k">요금</span><span>${priceLabel(site)}</span></div>
     <div class="row"><span class="k">반려동물 동반</span><span>${site.pet ? "가능" : "불가"}</span></div>
+    <div class="row"><span class="k">모토캠핑</span><span>${site.moto ? "적합" : "정보 없음"}</span></div>
     <div class="amenities">${site.amenities.map((a) => `<span>${a}</span>`).join("")}</div>
     <div class="actions">
       ${site.link ? `<a class="primary" href="${site.link}" target="_blank" rel="noopener">예약 페이지</a>` : ""}

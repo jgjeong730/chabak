@@ -1,4 +1,4 @@
-# 차박Seek
+# 🚐 노숙아니고 차박
 
 전국 오토캠핑장 · 예약제 야영장 · 무료 차박지를 지도와 필터로 찾는 대시보드.
 [campseek](https://heekeunlee.github.io/campseek/), [korea_festival](https://heekeunlee.github.io/korea_festival/)를 벤치마킹해 설계했다.

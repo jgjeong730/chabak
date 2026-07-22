@@ -5,6 +5,10 @@ import L from "leaflet";
 import "leaflet.markercluster";
 import "./style.css";
 
+const BRAND_NAME = "노숙아니고 차박";
+const BRAND_EMOJI = "🚐";
+const REPO_URL = "https://github.com/jgjeong730/chabak";
+
 const TYPE_LABEL = { free: "무료", fee: "유료", reservation: "예약제" };
 const SOURCE_LABEL = { official: "공식", community: "제보" };
 
@@ -59,49 +63,78 @@ function priceLabel(site) {
   return "요금 문의";
 }
 
+function formatUpdatedAt(iso) {
+  if (!iso) return "";
+  const d = new Date(iso);
+  const datePart = new Intl.DateTimeFormat("ko-KR", { month: "numeric", day: "numeric" }).format(d);
+  const timePart = new Intl.DateTimeFormat("ko-KR", { hour: "numeric", minute: "2-digit", hour12: true }).format(d);
+  return `${datePart} ${timePart}`;
+}
+
 // ---------- layout ----------
 const app = document.getElementById("app");
 app.innerHTML = `
-  <div class="app">
-    <div class="topbar">
-      <div class="brand"><span class="sw"></span>차박Seek</div>
-      <div class="kpis" id="kpis"></div>
-      <button class="theme-toggle" id="themeToggle">테마</button>
-    </div>
+  <div class="page">
+    <header class="hero">
+      <div class="hero-row">
+        <h1><span class="emoji">${BRAND_EMOJI}</span> ${BRAND_NAME}</h1>
+        <button class="theme-toggle" id="themeToggle">🌙 다크</button>
+      </div>
+      <p class="subtitle">전국 차박 가능 사이트를 지도로 한눈에 · <span id="updatedAt">불러오는 중</span> 갱신</p>
+    </header>
+
+    <section class="stat-grid" id="kpis"></section>
+
     <div class="disclaimer">
       <b>안내</b> "제보" 배지 장소는 커뮤니티 정보 기반이며 주정차·야영 가능 여부는 현지 규정을 반드시 확인하세요. 최근 확인일이 오래된 장소는 방문 전 재확인을 권장합니다.
     </div>
-    <div class="filterbar">
-      <input type="text" id="search" placeholder="장소명 또는 주소 검색" />
-      <select id="regionSelect"></select>
-      <div class="chip-group" id="typeGroup">
-        <span class="chip type-chip active" data-type="all">전체</span>
-        <span class="chip type-chip" data-type="free">무료</span>
-        <span class="chip type-chip" data-type="fee">유료</span>
-        <span class="chip type-chip" data-type="reservation">예약제</span>
-        <span class="chip type-chip" data-type="bookable">예약 가능만</span>
+
+    <section class="filter-card">
+      <div class="filter-row">
+        <input type="text" id="search" placeholder="장소명 또는 주소 검색" />
+        <select id="regionSelect"></select>
       </div>
-      <span class="filter-divider"></span>
-      <span class="chip" data-amenity="전기">전기</span>
-      <span class="chip" data-amenity="화장실">화장실</span>
-      <span class="chip" data-amenity="반려동물">반려동물 동반</span>
-      <span class="chip" data-amenity="모토캠핑">🏍️ 모토캠핑 가능</span>
-    </div>
-    <div class="body view-map" id="body">
-      <div class="map-panel">
+      <div class="filter-row chips-row">
+        <div class="chip-group" id="typeGroup">
+          <span class="chip type-chip active" data-type="all">전체</span>
+          <span class="chip type-chip" data-type="free">무료</span>
+          <span class="chip type-chip" data-type="fee">유료</span>
+          <span class="chip type-chip" data-type="reservation">예약제</span>
+          <span class="chip type-chip" data-type="bookable">예약 가능만</span>
+        </div>
+        <span class="filter-divider"></span>
+        <span class="chip" data-amenity="전기">⚡ 전기</span>
+        <span class="chip" data-amenity="화장실">🚻 화장실</span>
+        <span class="chip" data-amenity="반려동물">🐾 반려동물 동반</span>
+        <span class="chip" data-amenity="모토캠핑">🏍️ 모토캠핑 가능</span>
+      </div>
+    </section>
+
+    <section class="board-card">
+      <div class="board-header">
         <div class="view-tabs">
-          <button data-view="map" class="active">지도</button>
-          <button data-view="list">리스트</button>
+          <button data-view="map" class="active">🗺️ 지도</button>
+          <button data-view="list">📋 리스트</button>
         </div>
-        <div id="map"></div>
-        <div class="map-legend">
-          <span><i style="background:var(--good)"></i>무료</span>
-          <span><i style="background:var(--warn)"></i>유료</span>
-          <span><i style="background:var(--resv)"></i>예약제</span>
-        </div>
+        <span class="board-count" id="boardCount"></span>
       </div>
-      <div class="list-panel" id="listPanel"><div class="empty">불러오는 중...</div></div>
-    </div>
+      <div class="body view-map" id="body">
+        <div class="map-panel">
+          <div id="map"></div>
+          <div class="map-legend">
+            <span><i style="background:var(--good)"></i>무료</span>
+            <span><i style="background:var(--warn)"></i>유료</span>
+            <span><i style="background:var(--resv)"></i>예약제</span>
+          </div>
+        </div>
+        <div class="list-panel" id="listPanel"><div class="empty">불러오는 중...</div></div>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <p>데이터 출처: 한국관광공사 고캠핑 API(공공데이터포털) + 수동 큐레이션</p>
+      <p>최종 갱신 <span id="footerUpdatedAt"></span> · <a href="${REPO_URL}" target="_blank" rel="noopener">GitHub</a></p>
+    </footer>
   </div>
   <div class="overlay hidden" id="overlay">
     <div class="detail" id="detail"></div>
@@ -117,7 +150,7 @@ function applyTheme(mode) {
     document.documentElement.setAttribute("data-theme", mode);
   }
   localStorage.setItem("chabak-theme", mode);
-  themeToggle.textContent = mode === "system" ? "테마: 자동" : mode === "dark" ? "테마: 다크" : "테마: 라이트";
+  themeToggle.textContent = mode === "system" ? "🌓 자동" : mode === "dark" ? "🌙 다크" : "☀️ 라이트";
 }
 const savedTheme = localStorage.getItem("chabak-theme") || "system";
 applyTheme(savedTheme);
@@ -217,6 +250,8 @@ function renderKpis(sites) {
     <div class="kpi"><div class="n">${regionsCount}</div><div class="l">커버 지역</div></div>
     <div class="kpi"><div class="n">${shown}</div><div class="l">현재 필터 결과</div></div>
   `;
+  const boardCount = document.getElementById("boardCount");
+  if (boardCount) boardCount.textContent = `${shown}곳 표시`;
 }
 
 // ---------- detail ----------
@@ -318,6 +353,9 @@ async function loadData() {
     const res = await fetch(`${import.meta.env.BASE_URL}data/sites.json`);
     const data = await res.json();
     state.sites = data.sites;
+    const updated = formatUpdatedAt(data.generatedAt);
+    document.getElementById("updatedAt").textContent = updated;
+    document.getElementById("footerUpdatedAt").textContent = updated;
   } catch (err) {
     console.error("데이터 로드 실패:", err);
     state.sites = [];

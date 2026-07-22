@@ -43,6 +43,14 @@ function kakaoSearchLink(site) {
   return `https://map.kakao.com/link/search/${encodeURIComponent(site.name + " " + site.address)}`;
 }
 
+function blogSearchLink(site) {
+  return `https://search.naver.com/search.naver?where=blog&query=${encodeURIComponent(site.name + " 후기")}`;
+}
+
+function videoSearchLink(site) {
+  return `https://www.youtube.com/results?search_query=${encodeURIComponent(site.name + " 후기")}`;
+}
+
 function priceLabel(site) {
   if (site.type === "free") return "무료";
   if (site.price) return `${site.price.toLocaleString()}원~`;
@@ -232,6 +240,10 @@ function selectSite(id) {
     <div class="actions">
       ${site.link ? `<a class="primary" href="${site.link}" target="_blank" rel="noopener">예약 페이지</a>` : ""}
       <a class="${site.link ? "secondary" : "primary"}" href="${kakaoSearchLink(site)}" target="_blank" rel="noopener">길찾기</a>
+    </div>
+    <div class="review-links">
+      <a href="${blogSearchLink(site)}" target="_blank" rel="noopener">📝 블로그 후기 찾기</a>
+      <a href="${videoSearchLink(site)}" target="_blank" rel="noopener">▶ 유튜브 후기 찾기</a>
     </div>
     <div class="verify">최근 확인일 ${site.lastVerified} · ${SOURCE_LABEL[site.source]} 정보</div>
   `;
